@@ -6,24 +6,36 @@ using Microsoft.Extensions.Logging;
 using Fortune_Teller_UI.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Fortune_Teller_UI.Controllers
 {
     public class FortunesController : Controller
     {
-        ILogger<FortunesController> _logger;
-        IFortuneService _fortuneService;
- 
-        public FortunesController(ILogger<FortunesController> logger, IFortuneService fortuneService)
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ILogger<FortunesController> _logger;
+        private readonly IFortuneService _fortuneService;
+        private readonly IConfiguration _configuration;
+
+        public FortunesController(ILogger<FortunesController> logger, IFortuneService fortuneService, IHostingEnvironment hostingEnvironment, IConfiguration configuration)
         {
             _logger = logger;
             _fortuneService = fortuneService;
+            _hostingEnvironment = hostingEnvironment;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
         {
             _logger?.LogDebug("Index");
-            ViewData["MyFortune"] = HttpContext.Session.GetString("MyFortune");
+
+            string fortune = HttpContext.Session.GetString("MyFortune");
+            ViewData["MyFortune"] = !String.IsNullOrEmpty(fortune) ? fortune : "DEFAULT FORTUNE";
+            ViewData["Environment"] = _hostingEnvironment.EnvironmentName;
+            ViewData["ServiceAddress"] = _configuration.GetSection("fortuneService")?.Get<FortuneServiceOptions>()?.Address;
             return View();
         }
 
