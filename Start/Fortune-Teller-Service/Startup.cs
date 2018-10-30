@@ -28,6 +28,9 @@ namespace Fortune_Teller_Service
             services.AddOptions();
 
             services.AddMvc();
+
+            services.AddTransient<IFortuneRepository, FortuneRepository>();
+            services.AddDbContext<FortuneContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,7 +42,6 @@ namespace Fortune_Teller_Service
             }
 
             app.UseMvc();
-
         }
     }
 }

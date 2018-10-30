@@ -12,11 +12,13 @@ namespace Fortune_Teller_Service.Controllers
     public class FortunesController : Controller
     {
         ILogger<FortunesController> _logger;
+        IFortuneRepository _fortuneRepository;
 
 
-        public FortunesController(ILogger<FortunesController> logger)
+        public FortunesController(ILogger<FortunesController> logger, IFortuneRepository fortuneRepository)
         {
             _logger = logger;
+            _fortuneRepository = fortuneRepository;
         }
 
 
@@ -25,9 +27,15 @@ namespace Fortune_Teller_Service.Controllers
         public async Task<List<Fortune>> AllFortunesAsync()
         {
             _logger?.LogDebug("AllFortunesAsync");
-            return await Task.FromResult(
-                new List<Fortune>() { new Fortune() { Id = 1, Text = "Hello from FortuneController Web API!" } });
 
+            var fortunes = await _fortuneRepository.GetAllAsync();
+
+            var fortuneDtos = new List<Fortune>();
+            foreach(var fortune in fortunes)
+            {
+                fortuneDtos.Add(new Fortune() { Id = fortune.Id, Text = fortune.Text });
+            }
+            return fortuneDtos;
         }
 
         // GET api/fortunes/random
@@ -35,7 +43,9 @@ namespace Fortune_Teller_Service.Controllers
         public async Task<Fortune> RandomFortuneAsync()
         {
             _logger?.LogDebug("RandomFortuneAsync");
-            return (await AllFortunesAsync())[0];
+
+            var fortune = await _fortuneRepository.RandomFortuneAsync();
+            return new Fortune() { Id = fortune.Id, Text = fortune.Text };
         }
     }
 }
