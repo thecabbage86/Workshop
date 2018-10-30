@@ -37,12 +37,12 @@ namespace Fortune_Teller_UI.Services
 
         public async Task<List<Fortune>> AllFortunesAsync()
         {
-            return await Task.FromResult(new List<Fortune>() { new Fortune() { Id = 1, Text = "I need to be wired up!" } });
+            return await HandleRequest<List<Fortune>>(Config.AllFortunesURL);
         }
 
         public async Task<Fortune> RandomFortuneAsync()
         {
-            return (await AllFortunesAsync())[0];
+            return await HandleRequest<Fortune>(Config.RandomFortuneURL);
         }
 
         private async Task<T> HandleRequest<T>(string url) where T : class

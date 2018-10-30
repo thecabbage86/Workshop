@@ -12,11 +12,12 @@ namespace Fortune_Teller_UI.Controllers
     public class FortunesController : Controller
     {
         ILogger<FortunesController> _logger;
-
+        IFortuneService _fortuneService;
  
-        public FortunesController(ILogger<FortunesController> logger)
+        public FortunesController(ILogger<FortunesController> logger, IFortuneService fortuneService)
         {
             _logger = logger;
+            _fortuneService = fortuneService;
         }
 
         public IActionResult Index()
@@ -30,10 +31,10 @@ namespace Fortune_Teller_UI.Controllers
         {
             _logger?.LogDebug("RandomFortune");
 
-            var fortune = await Task.FromResult(new Fortune() { Id = 1, Text = "Hello from FortuneController UI!" });
+            var fortune = await _fortuneService.RandomFortuneAsync();
+
             HttpContext.Session.SetString("MyFortune", fortune.Text); 
             return View(fortune);
-
         }
 
         [HttpPost]

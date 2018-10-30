@@ -29,10 +29,13 @@ namespace Fortune_Teller_UI
         {
             services.AddOptions();
 
-      
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddMvc();
+
+            services.AddTransient<IFortuneService, FortuneServiceClient>();
+
+            services.Configure<FortuneServiceOptions>(Configuration.GetSection("fortuneService"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,7 +61,6 @@ namespace Fortune_Teller_UI
                     name: "default",
                     template: "{controller=Fortunes}/{action=Index}/{id?}");
             });
-
         }
     }
 }

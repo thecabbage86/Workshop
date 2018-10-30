@@ -9,7 +9,7 @@ namespace Fortune_Teller_Service.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseInMemoryDatabase("fortunes", null); //?
+            optionsBuilder.UseInMemoryDatabase("fortunes", null); 
         }
 
         public DbSet<FortuneEntity> Fortunes { get; set; }
