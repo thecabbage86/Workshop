@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Pivotal.Extensions.Configuration.ConfigServer;
 
 namespace Fortune_Teller_Service
 {
@@ -24,6 +25,8 @@ namespace Fortune_Teller_Service
 
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+                    config.AddConfigServer(env);
 
                     config.AddEnvironmentVariables();
 

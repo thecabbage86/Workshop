@@ -1,0 +1,8 @@
+{
+  "fortuneService": {
+    "scheme": "https",
+    "address": "fortuneservice-brave-lemur.cfapps.io",
+    "randomFortunePath": "api/fortunes/random",
+    "allFortunesPath": "api/fortunes/all"
+  }
+}
