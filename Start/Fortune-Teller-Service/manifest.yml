@@ -5,3 +5,5 @@ applications:
   buildpack: dotnet_core_buildpack  
   env:
     ASPNETCORE_ENVIRONMENT: Development
+  services:
+    - myConfigServer
