@@ -1,8 +1,8 @@
-{
-  "fortuneService": {
-    "scheme": "https",
-    "address": "fortuneservice-brave-lemur.cfapps.io",
-    "randomFortunePath": "api/fortunes/random",
-    "allFortunesPath": "api/fortunes/all"
-  }
-}
+eureka:
+  client:
+    shouldRegisterWithEureka: false
+fortuneService:
+  scheme: http
+  address: fortuneservice
+  randomFortunePath: api/fortunes/random
+  allFortunesPath: api/fortunes/all

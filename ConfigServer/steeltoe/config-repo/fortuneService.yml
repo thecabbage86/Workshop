@@ -1,0 +1,7 @@
+eureka:
+  client:
+    shouldFetchRegistry: false
+  instance:
+    port: 58497
+    preferIpAddress: true
+    ipAddress: localhost

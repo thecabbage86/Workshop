@@ -8,4 +8,6 @@ applications:
   command: cmd /c .\Fortune-Teller-UI --server.urls http://*:%PORT%
   env:
     ASPNETCORE_ENVIRONMENT: Production
-
+  services:
+   - myConfigServer
+   - myDiscoveryService

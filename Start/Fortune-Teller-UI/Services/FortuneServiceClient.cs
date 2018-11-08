@@ -10,14 +10,15 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using System.Net.Http.Headers;
+using Steeltoe.Common.Discovery;
 
 namespace Fortune_Teller_UI.Services
 {
     public class FortuneServiceClient : IFortuneService
     {
-
-        ILogger<FortuneServiceClient> _logger;
-        IOptionsSnapshot<FortuneServiceOptions> _config;
+        private readonly ILogger<FortuneServiceClient> _logger;
+        private IOptionsSnapshot<FortuneServiceOptions> _config;
+        private readonly DiscoveryHttpClientHandler _handler;
 
         private FortuneServiceOptions Config
         {
@@ -28,11 +29,11 @@ namespace Fortune_Teller_UI.Services
         }
 
         public FortuneServiceClient(
-            IOptionsSnapshot<FortuneServiceOptions> config, 
-            ILogger<FortuneServiceClient> logger)
+            IOptionsSnapshot<FortuneServiceOptions> config, ILogger<FortuneServiceClient> logger, IDiscoveryClient discoveryClient)
         {
             _logger = logger;
             _config = config;
+            _handler = new DiscoveryHttpClientHandler(discoveryClient, _logger);
         }
 
         public async Task<List<Fortune>> AllFortunesAsync()
@@ -51,7 +52,7 @@ namespace Fortune_Teller_UI.Services
             try
             {
                 using (var client = await GetClientAsync())
-                {
+                {                    
                     var stream = await client.GetStreamAsync(url);
                     var result = Deserialize<T>(stream);
                     _logger?.LogDebug("FortuneService returned: {result}", result);
@@ -64,7 +65,6 @@ namespace Fortune_Teller_UI.Services
                 throw;
             }
         }
-
 
         private T Deserialize<T>(Stream stream) where T : class
         {
@@ -85,7 +85,7 @@ namespace Fortune_Teller_UI.Services
 
         private async Task<HttpClient> GetClientAsync()
         {
-            var client = new HttpClient();
+            var client = new HttpClient(_handler);
             return await Task.FromResult(client);
         }
     }

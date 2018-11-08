@@ -6,10 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-
-
 using Fortune_Teller_UI.Services;
-
+using Pivotal.Discovery.Client;
 
 namespace Fortune_Teller_UI
 {
@@ -36,6 +34,7 @@ namespace Fortune_Teller_UI
             services.AddTransient<IFortuneService, FortuneServiceClient>();
 
             services.Configure<FortuneServiceOptions>(Configuration.GetSection("fortuneService"));
+            services.AddDiscoveryClient(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +60,8 @@ namespace Fortune_Teller_UI
                     name: "default",
                     template: "{controller=Fortunes}/{action=Index}/{id?}");
             });
+
+            app.UseDiscoveryClient();
         }
     }
 }
