@@ -8,3 +8,4 @@ applications:
   services:
     - myConfigServer
     - myDiscoveryService
+    - myMySqlService
