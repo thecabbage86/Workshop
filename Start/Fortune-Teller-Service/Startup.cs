@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Fortune_Teller_Service.Models;
 using Pivotal.Discovery.Client;
+using Microsoft.EntityFrameworkCore;
+using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 
 namespace Fortune_Teller_Service
 {
@@ -26,7 +28,16 @@ namespace Fortune_Teller_Service
             services.AddMvc();
 
             services.AddTransient<IFortuneRepository, FortuneRepository>();
-            services.AddDbContext<FortuneContext>();
+
+            if(Environment.IsDevelopment())
+            {
+                services.AddEntityFrameworkInMemoryDatabase().AddDbContext<FortuneContext>(options => options.UseInMemoryDatabase("fortunes"));
+            }
+            else
+            {
+                services.AddDbContext<FortuneContext>(options => options.UseMySql(Configuration)); 
+            }
+
             services.AddDiscoveryClient(Configuration);
         }
 
