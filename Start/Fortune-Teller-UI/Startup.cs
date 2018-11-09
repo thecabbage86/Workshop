@@ -51,11 +51,14 @@ namespace Fortune_Teller_UI
             services.AddDiscoveryClient(Configuration);
 
             services.AddHystrixCommand<FortuneServiceCommand>("FortuneService", Configuration);
+            services.AddHystrixMetricsStream(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseHystrixRequestContext();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -64,6 +67,7 @@ namespace Fortune_Teller_UI
             else
             {
                 app.UseExceptionHandler("/Fortunes/Error");
+                app.UseHystrixMetricsStream();
             }
 
             app.UseStaticFiles();
@@ -77,6 +81,7 @@ namespace Fortune_Teller_UI
                     template: "{controller=Fortunes}/{action=Index}/{id?}");
             });
 
+            //Pivotal.Discovery.Client.DiscoveryApplicationBuilderExtensions.UseDiscoveryClient();
             app.UseDiscoveryClient();
         }
     }
