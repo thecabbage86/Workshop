@@ -10,6 +10,7 @@ using Fortune_Teller_UI.Services;
 using Pivotal.Discovery.Client;
 using Steeltoe.Security.DataProtection;
 using Steeltoe.CloudFoundry.Connector.Redis;
+using Steeltoe.CircuitBreaker.Hystrix;
 
 namespace Fortune_Teller_UI
 {
@@ -48,6 +49,8 @@ namespace Fortune_Teller_UI
 
             services.Configure<FortuneServiceOptions>(Configuration.GetSection("fortuneService"));
             services.AddDiscoveryClient(Configuration);
+
+            services.AddHystrixCommand<FortuneServiceCommand>("FortuneService", Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

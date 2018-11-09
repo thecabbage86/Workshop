@@ -17,13 +17,13 @@ namespace Fortune_Teller_UI.Controllers
     {
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ILogger<FortunesController> _logger;
-        private readonly IFortuneService _fortuneService;
+        private readonly FortuneServiceCommand _fortuneServiceCommand;
         private readonly IConfiguration _configuration;
 
-        public FortunesController(ILogger<FortunesController> logger, IFortuneService fortuneService, IHostingEnvironment hostingEnvironment, IConfiguration configuration)
+        public FortunesController(ILogger<FortunesController> logger, FortuneServiceCommand fortuneServiceCommand, IHostingEnvironment hostingEnvironment, IConfiguration configuration)
         {
             _logger = logger;
-            _fortuneService = fortuneService;
+            _fortuneServiceCommand = fortuneServiceCommand;
             _hostingEnvironment = hostingEnvironment;
             _configuration = configuration;
         }
@@ -43,7 +43,7 @@ namespace Fortune_Teller_UI.Controllers
         {
             _logger?.LogDebug("RandomFortune");
 
-            var fortune = await _fortuneService.RandomFortuneAsync();
+            var fortune = await _fortuneServiceCommand.RandomFortuneAsync();
 
             HttpContext.Session.SetString("MyFortune", fortune.Text); 
             return View(fortune);
