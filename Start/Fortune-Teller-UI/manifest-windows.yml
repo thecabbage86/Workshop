@@ -12,3 +12,4 @@ applications:
    - myConfigServer
    - myDiscoveryService
    - myRedisService
+   - myHystrixService
