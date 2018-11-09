@@ -3,8 +3,10 @@ applications:
 - name: fortuneui
   random-route: true
   buildpack: dotnet_core_buildpack  
+  memory: 256M
   env:
     ASPNETCORE_ENVIRONMENT: Production
   services:
     - myConfigServer
     - myDiscoveryService
+    - myRedisService
