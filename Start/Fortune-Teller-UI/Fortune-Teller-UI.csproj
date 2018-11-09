@@ -12,6 +12,7 @@
     <PackageReference Include="Pivotal.Extensions.Configuration.ConfigServerCore" Version="2.1.1" />
     <PackageReference Include="Steeltoe.CloudFoundry.Connector" Version="1.1.0" />
     <PackageReference Include="Steeltoe.CloudFoundry.Connector.Redis" Version="1.1.0" />
+    <PackageReference Include="Steeltoe.Security.DataProtection.RedisCore" Version="2.1.1" />
   </ItemGroup>
   
   <ItemGroup>
