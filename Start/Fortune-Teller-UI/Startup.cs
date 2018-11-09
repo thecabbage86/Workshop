@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Fortune_Teller_UI.Services;
 using Pivotal.Discovery.Client;
+using Steeltoe.CloudFoundry.Connector.Redis;
 
 namespace Fortune_Teller_UI
 {
@@ -27,7 +28,15 @@ namespace Fortune_Teller_UI
         {
             services.AddOptions();
 
-            services.AddDistributedMemoryCache();
+            if (Environment.IsDevelopment())
+            {
+                services.AddDistributedMemoryCache();
+            }
+            else
+            {
+                services.AddDistributedRedisCache(Configuration);
+            }
+
             services.AddSession();
             services.AddMvc();
 
